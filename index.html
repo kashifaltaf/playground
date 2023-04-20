@@ -2,29 +2,89 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Page Title</title>
+  <title>World Clock</title>
+  <style>
+    body {
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-top: 50px;
+      color: #555;
+    }
+    
+    #clock-widget {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 50px;
+    }
+    
+    .clock {
+      text-align: center;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      background-color: #fff;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+      margin: 20px;
+    }
+    
+    .clock h2 {
+      color: #555;
+      font-size: 28px;
+      margin-top: 30px;
+    }
+    
+    .clock p {
+      color: #888;
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+  </style>
+  <script>
+    function updateTime() {
+      var date = new Date();
+      
+      var londonTime = date.toLocaleString('en-US', {timeZone: 'Europe/London'});
+      document.getElementById('london').innerHTML = londonTime;
+      
+      var newyorkTime = date.toLocaleString('en-US', {timeZone: 'America/New_York'});
+      document.getElementById('new-york').innerHTML = newyorkTime;
+      
+      var tokyoTime = date.toLocaleString('en-US', {timeZone: 'Asia/Tokyo'});
+      document.getElementById('tokyo').innerHTML = tokyoTime;
+      
+      var sydneyTime = date.toLocaleString('en-US', {timeZone: 'Australia/Sydney'});
+      document.getElementById('sydney').innerHTML = sydneyTime;
+    }
+    
+    setInterval(updateTime, 1000);
+  </script>
 </head>
 <body>
-  <header>
-    <h1>Playground</h1>
-    <nav>
-      <ul>
-        <li><a href="#">Link 1</a></li>
-        <li><a href="#">Link 2</a></li>
-        <li><a href="#">Link 3</a></li>
-      </ul>
-    </nav>
-  </header>
-  
-  <main>
-    <section>
-      <h2>Section Title</h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet accumsan eros. Sed sed sapien a ante suscipit pellentesque nec a massa. Quisque euismod elit sed bibendum volutpat. </p>
-    </section>
-  </main>
-  
-  <footer>
-    <p>&copy; 2023 - My Website</p>
-  </footer>
+  <h1>World Clock</h1>
+  <div id="clock-widget">
+    <div class="clock">
+      <h2>London</h2>
+      <p id="london"></p>
+    </div>
+    <div class="clock">
+      <h2>New York</h2>
+      <p id="new-york"></p>
+    </div>
+    <div class="clock">
+      <h2>Tokyo</h2>
+      <p id="tokyo"></p>
+    </div>
+    <div class="clock">
+      <h2>Sydney</h2>
+      <p id="sydney"></p>
+    </div>
+  </div>
 </body>
 </html>
