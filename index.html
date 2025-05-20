@@ -61,9 +61,9 @@
       
       var sydneyTime = date.toLocaleString('en-US', {timeZone: 'Australia/Sydney'});
       document.getElementById('sydney').innerHTML = sydneyTime;
-    }
-    
-    setInterval(updateTime, 1000);
+      }
+      updateTime();
+      setInterval(updateTime, 1000);
   </script>
 </head>
 <body>
