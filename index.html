@@ -46,26 +46,6 @@
       margin-top: 15px;
     }
   </style>
-  <script>
-    function updateTime() {
-      var date = new Date();
-      
-      var londonTime = date.toLocaleString('en-US', {timeZone: 'Europe/London'});
-      document.getElementById('london').innerHTML = londonTime;
-      
-      var newyorkTime = date.toLocaleString('en-US', {timeZone: 'America/New_York'});
-      document.getElementById('new-york').innerHTML = newyorkTime;
-      
-      var tokyoTime = date.toLocaleString('en-US', {timeZone: 'Asia/Tokyo'});
-      document.getElementById('tokyo').innerHTML = tokyoTime;
-      
-      var sydneyTime = date.toLocaleString('en-US', {timeZone: 'Australia/Sydney'});
-      document.getElementById('sydney').innerHTML = sydneyTime;
-    }
-    
-      setInterval(updateTime, 1000);
-      updateTime();
-  </script>
 </head>
 <body>
   <h1>World Clock</h1>
