@@ -102,22 +102,20 @@ if (typeof window !== 'undefined') {
     applyAnalog();
   }
 
-  const TIME_ZONES = {
-    'United States': {
-      'New York': 'America/New_York',
-      'Los Angeles': 'America/Los_Angeles',
-      'Chicago': 'America/Chicago'
-    },
-    'United Kingdom': {
-      'London': 'Europe/London'
-    },
-    'Japan': {
-      'Tokyo': 'Asia/Tokyo'
-    },
-    'Australia': {
-      'Sydney': 'Australia/Sydney'
-    }
-  };
+  function buildTimeZoneMap() {
+    const map = {};
+    if (typeof Intl.supportedValuesOf !== 'function') return map;
+    Intl.supportedValuesOf('timeZone').forEach(tz => {
+      const parts = tz.split('/');
+      const country = parts[0];
+      const city = parts.slice(1).join('/') || tz;
+      if (!map[country]) map[country] = {};
+      map[country][city] = tz;
+    });
+    return map;
+  }
+
+  const TIME_ZONES = buildTimeZoneMap();
 
   const countrySelect = document.getElementById('country-select');
   const citySelect = document.getElementById('city-select');
@@ -150,8 +148,8 @@ if (typeof window !== 'undefined') {
 
   function populateCountries() {
     if (!countrySelect) return;
-    countrySelect.innerHTML = '<option value="">Country</option>';
-    Object.keys(TIME_ZONES).forEach(c => {
+    countrySelect.innerHTML = '<option value="">Region</option>';
+    Object.keys(TIME_ZONES).sort().forEach(c => {
       const opt = document.createElement('option');
       opt.value = c;
       opt.textContent = c;
@@ -161,10 +159,10 @@ if (typeof window !== 'undefined') {
 
   function populateCities(country) {
     if (!citySelect) return;
-    citySelect.innerHTML = '<option value="">City</option>';
+    citySelect.innerHTML = '<option value="">Time Zone</option>';
     citySelect.disabled = !country;
     if (!country) return;
-    Object.keys(TIME_ZONES[country]).forEach(city => {
+    Object.keys(TIME_ZONES[country]).sort().forEach(city => {
       const opt = document.createElement('option');
       opt.value = city;
       opt.textContent = city;

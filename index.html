@@ -8,6 +8,8 @@
       background-color: #121212;
       font-family: Arial, sans-serif;
       color: #eee;
+      margin: 0;
+      height: 100%;
     }
 
     body.light-mode {
@@ -46,10 +48,45 @@
     #config {
       text-align: center;
       margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
     }
 
     #config label {
       margin: 0 10px;
+    }
+
+    input.toggle {
+      appearance: none;
+      width: 40px;
+      height: 20px;
+      background: #555;
+      border-radius: 10px;
+      position: relative;
+      cursor: pointer;
+      outline: none;
+      vertical-align: middle;
+    }
+
+    input.toggle:checked {
+      background: #2196f3;
+    }
+
+    input.toggle::after {
+      content: '';
+      position: absolute;
+      left: 2px;
+      top: 2px;
+      width: 16px;
+      height: 16px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    input.toggle:checked::after {
+      transform: translateX(20px);
     }
     
     #clock-widget {
@@ -58,6 +95,7 @@
       align-items: center;
       flex-wrap: wrap;
       margin-top: 50px;
+      min-height: calc(100vh - 200px);
     }
     
     .clock {
@@ -76,12 +114,12 @@
     }
 
     .clock.local {
-      width: 300px;
+      width: 90vmin;
     }
 
     .clock.local .analog {
-      width: 200px;
-      height: 200px;
+      width: 60vmin;
+      height: 60vmin;
     }
 
     .analog {
@@ -143,12 +181,12 @@
   <h1>World Clock</h1>
   <div id="config">
     <label>
-      <input type="checkbox" id="dark-mode-toggle" checked>
       Dark mode
+      <input type="checkbox" id="dark-mode-toggle" class="toggle" checked>
     </label>
     <label>
-      <input type="checkbox" id="analog-toggle" checked>
       Analog clock
+      <input type="checkbox" id="analog-toggle" class="toggle" checked>
     </label>
     <select id="country-select"></select>
     <select id="city-select" disabled></select>
@@ -163,42 +201,6 @@
         <div class="hand second" id="local-second"></div>
       </div>
       <p id="local"></p>
-    </div>
-    <div class="clock" data-prefix="london" data-timezone="Europe/London">
-      <h2>London</h2>
-      <div class="analog" id="london-analog">
-        <div class="hand hour" id="london-hour"></div>
-        <div class="hand minute" id="london-minute"></div>
-        <div class="hand second" id="london-second"></div>
-      </div>
-      <p id="london"></p>
-    </div>
-    <div class="clock" data-prefix="new-york" data-timezone="America/New_York">
-      <h2>New York</h2>
-      <div class="analog" id="new-york-analog">
-        <div class="hand hour" id="new-york-hour"></div>
-        <div class="hand minute" id="new-york-minute"></div>
-        <div class="hand second" id="new-york-second"></div>
-      </div>
-      <p id="new-york"></p>
-    </div>
-    <div class="clock" data-prefix="tokyo" data-timezone="Asia/Tokyo">
-      <h2>Tokyo</h2>
-      <div class="analog" id="tokyo-analog">
-        <div class="hand hour" id="tokyo-hour"></div>
-        <div class="hand minute" id="tokyo-minute"></div>
-        <div class="hand second" id="tokyo-second"></div>
-      </div>
-      <p id="tokyo"></p>
-    </div>
-    <div class="clock" data-prefix="sydney" data-timezone="Australia/Sydney">
-      <h2>Sydney</h2>
-      <div class="analog" id="sydney-analog">
-        <div class="hand hour" id="sydney-hour"></div>
-        <div class="hand minute" id="sydney-minute"></div>
-        <div class="hand second" id="sydney-second"></div>
-      </div>
-      <p id="sydney"></p>
     </div>
   </div>
   <script src="updateTime.js"></script>
