@@ -9,11 +9,35 @@
       font-family: Arial, sans-serif;
       color: #eee;
     }
+
+    body.light-mode {
+      background-color: #fff;
+      color: #000;
+    }
+
+    body.light-mode .clock {
+      background-color: #f0f0f0;
+    }
+
+    body.light-mode h1,
+    body.light-mode .clock h2,
+    body.light-mode .clock p {
+      color: #000;
+    }
     
     h1 {
       text-align: center;
       margin-top: 50px;
       color: #fff;
+    }
+
+    #config {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    #config label {
+      margin: 0 10px;
     }
     
     #clock-widget {
@@ -80,10 +104,28 @@
       font-weight: bold;
       margin-top: 15px;
     }
+
+    body.analog-only .clock p {
+      display: none;
+    }
+
+    body.digital-only .analog {
+      display: none;
+    }
   </style>
 </head>
 <body>
   <h1>World Clock</h1>
+  <div id="config">
+    <label>
+      <input type="checkbox" id="dark-mode-toggle" checked>
+      Dark mode
+    </label>
+    <label>
+      <input type="checkbox" id="analog-toggle" checked>
+      Analog clock
+    </label>
+  </div>
   <div id="clock-widget">
     <div class="clock">
       <h2>London</h2>
