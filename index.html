@@ -5,14 +5,15 @@
   <title>World Clock</title>
   <style>
     body {
-      background-color: #f9f9f9;
+      background-color: #121212;
       font-family: Arial, sans-serif;
+      color: #eee;
     }
     
     h1 {
       text-align: center;
       margin-top: 50px;
-      color: #555;
+      color: #fff;
     }
     
     #clock-widget {
@@ -26,22 +27,56 @@
     .clock {
       text-align: center;
       width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      background-color: #fff;
-      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+      height: 320px;
+      border-radius: 8px;
+      background-color: #1e1e1e;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
       margin: 20px;
+      padding-top: 10px;
+    }
+
+    .analog {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      border: 6px solid #555;
+      border-radius: 50%;
+      margin: 10px auto;
+    }
+
+    .hand {
+      position: absolute;
+      bottom: 50%;
+      left: 50%;
+      transform-origin: bottom;
+      background: #fff;
+    }
+
+    .hand.hour {
+      width: 4px;
+      height: 40px;
+    }
+
+    .hand.minute {
+      width: 3px;
+      height: 55px;
+    }
+
+    .hand.second {
+      width: 2px;
+      height: 65px;
+      background: #ff5252;
     }
     
     .clock h2 {
-      color: #555;
-      font-size: 28px;
-      margin-top: 30px;
+      color: #fff;
+      font-size: 24px;
+      margin-top: 10px;
     }
     
     .clock p {
-      color: #888;
-      font-size: 32px;
+      color: #fff;
+      font-size: 20px;
       font-weight: bold;
       margin-top: 15px;
     }
@@ -52,18 +87,38 @@
   <div id="clock-widget">
     <div class="clock">
       <h2>London</h2>
+      <div class="analog" id="london-analog">
+        <div class="hand hour" id="london-hour"></div>
+        <div class="hand minute" id="london-minute"></div>
+        <div class="hand second" id="london-second"></div>
+      </div>
       <p id="london"></p>
     </div>
     <div class="clock">
       <h2>New York</h2>
+      <div class="analog" id="new-york-analog">
+        <div class="hand hour" id="new-york-hour"></div>
+        <div class="hand minute" id="new-york-minute"></div>
+        <div class="hand second" id="new-york-second"></div>
+      </div>
       <p id="new-york"></p>
     </div>
     <div class="clock">
       <h2>Tokyo</h2>
+      <div class="analog" id="tokyo-analog">
+        <div class="hand hour" id="tokyo-hour"></div>
+        <div class="hand minute" id="tokyo-minute"></div>
+        <div class="hand second" id="tokyo-second"></div>
+      </div>
       <p id="tokyo"></p>
     </div>
     <div class="clock">
       <h2>Sydney</h2>
+      <div class="analog" id="sydney-analog">
+        <div class="hand hour" id="sydney-hour"></div>
+        <div class="hand minute" id="sydney-minute"></div>
+        <div class="hand second" id="sydney-second"></div>
+      </div>
       <p id="sydney"></p>
     </div>
   </div>
