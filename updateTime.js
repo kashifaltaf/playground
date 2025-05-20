@@ -48,4 +48,25 @@ if (typeof module !== 'undefined') {
 
 if (typeof window !== 'undefined') {
   setInterval(() => updateTime(), 1000);
+
+  const darkToggle = document.getElementById('dark-mode-toggle');
+  const analogToggle = document.getElementById('analog-toggle');
+
+  if (darkToggle) {
+    darkToggle.addEventListener('change', () => {
+      document.body.classList.toggle('light-mode', !darkToggle.checked);
+    });
+    // initialize
+    document.body.classList.toggle('light-mode', !darkToggle.checked);
+  }
+
+  if (analogToggle) {
+    const applyAnalog = () => {
+      document.body.classList.toggle('digital-only', !analogToggle.checked);
+      document.body.classList.toggle('analog-only', analogToggle.checked);
+    };
+    analogToggle.addEventListener('change', applyAnalog);
+    // initialize
+    applyAnalog();
+  }
 }
