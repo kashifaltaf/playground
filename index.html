@@ -24,6 +24,18 @@
     body.light-mode .clock p {
       color: #000;
     }
+
+    body.light-mode .analog {
+      border-color: #888;
+    }
+
+    body.light-mode .hand {
+      background: #000;
+    }
+
+    body.light-mode .hand.second {
+      background: #ff5252;
+    }
     
     h1 {
       text-align: center;
@@ -51,12 +63,25 @@
     .clock {
       text-align: center;
       width: 250px;
-      height: 320px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       border-radius: 8px;
       background-color: #1e1e1e;
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
       margin: 20px;
-      padding-top: 10px;
+      padding: 10px;
+    }
+
+    .clock.local {
+      width: 300px;
+    }
+
+    .clock.local .analog {
+      width: 200px;
+      height: 200px;
     }
 
     .analog {
@@ -125,9 +150,21 @@
       <input type="checkbox" id="analog-toggle" checked>
       Analog clock
     </label>
+    <select id="country-select"></select>
+    <select id="city-select" disabled></select>
+    <button id="add-clock">Add Clock</button>
   </div>
   <div id="clock-widget">
-    <div class="clock">
+    <div class="clock local" data-prefix="local" data-timezone="local">
+      <h2>Local Time</h2>
+      <div class="analog" id="local-analog">
+        <div class="hand hour" id="local-hour"></div>
+        <div class="hand minute" id="local-minute"></div>
+        <div class="hand second" id="local-second"></div>
+      </div>
+      <p id="local"></p>
+    </div>
+    <div class="clock" data-prefix="london" data-timezone="Europe/London">
       <h2>London</h2>
       <div class="analog" id="london-analog">
         <div class="hand hour" id="london-hour"></div>
@@ -136,7 +173,7 @@
       </div>
       <p id="london"></p>
     </div>
-    <div class="clock">
+    <div class="clock" data-prefix="new-york" data-timezone="America/New_York">
       <h2>New York</h2>
       <div class="analog" id="new-york-analog">
         <div class="hand hour" id="new-york-hour"></div>
@@ -145,7 +182,7 @@
       </div>
       <p id="new-york"></p>
     </div>
-    <div class="clock">
+    <div class="clock" data-prefix="tokyo" data-timezone="Asia/Tokyo">
       <h2>Tokyo</h2>
       <div class="analog" id="tokyo-analog">
         <div class="hand hour" id="tokyo-hour"></div>
@@ -154,7 +191,7 @@
       </div>
       <p id="tokyo"></p>
     </div>
-    <div class="clock">
+    <div class="clock" data-prefix="sydney" data-timezone="Australia/Sydney">
       <h2>Sydney</h2>
       <div class="analog" id="sydney-analog">
         <div class="hand hour" id="sydney-hour"></div>
