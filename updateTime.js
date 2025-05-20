@@ -35,11 +35,38 @@ function setZoneTime(date, timeZone, prefix) {
   }
 }
 
+const DEFAULT_ZONES = [
+  { timeZone: 'Europe/London', prefix: 'london' },
+  { timeZone: 'America/New_York', prefix: 'new-york' },
+  { timeZone: 'Asia/Tokyo', prefix: 'tokyo' },
+  { timeZone: 'Australia/Sydney', prefix: 'sydney' }
+];
+
 function updateTime(date = new Date()) {
-  setZoneTime(date, 'Europe/London', 'london');
-  setZoneTime(date, 'America/New_York', 'new-york');
-  setZoneTime(date, 'Asia/Tokyo', 'tokyo');
-  setZoneTime(date, 'Australia/Sydney', 'sydney');
+  if (
+    typeof document === 'undefined' ||
+    typeof document.querySelectorAll !== 'function'
+  ) {
+    DEFAULT_ZONES.forEach(z => setZoneTime(date, z.timeZone, z.prefix));
+    return;
+  }
+
+  const clocks = document.querySelectorAll('.clock[data-prefix]');
+  clocks.forEach(clock => {
+    const prefix = clock.dataset.prefix;
+    let zone = clock.dataset.timezone;
+    if (!zone || zone === 'local') {
+      zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    }
+    setZoneTime(date, zone, prefix);
+  });
+
+  // fallback for tests where .clock elements don't exist
+  DEFAULT_ZONES.forEach(z => {
+    if (!document.querySelector(`.clock[data-prefix="${z.prefix}"]`) && document.getElementById(z.prefix)) {
+      setZoneTime(date, z.timeZone, z.prefix);
+    }
+  });
 }
 
 if (typeof module !== 'undefined') {
@@ -64,9 +91,117 @@ if (typeof window !== 'undefined') {
     const applyAnalog = () => {
       document.body.classList.toggle('digital-only', !analogToggle.checked);
       document.body.classList.toggle('analog-only', analogToggle.checked);
+      sessionStorage.setItem('analogClock', analogToggle.checked);
     };
+    const savedAnalog = sessionStorage.getItem('analogClock');
+    if (savedAnalog !== null) {
+      analogToggle.checked = savedAnalog === 'true';
+    }
     analogToggle.addEventListener('change', applyAnalog);
     // initialize
     applyAnalog();
   }
+
+  const TIME_ZONES = {
+    'United States': {
+      'New York': 'America/New_York',
+      'Los Angeles': 'America/Los_Angeles',
+      'Chicago': 'America/Chicago'
+    },
+    'United Kingdom': {
+      'London': 'Europe/London'
+    },
+    'Japan': {
+      'Tokyo': 'Asia/Tokyo'
+    },
+    'Australia': {
+      'Sydney': 'Australia/Sydney'
+    }
+  };
+
+  const countrySelect = document.getElementById('country-select');
+  const citySelect = document.getElementById('city-select');
+  const addClock = document.getElementById('add-clock');
+
+  const addedClocks = JSON.parse(sessionStorage.getItem('addedClocks') || '[]');
+
+  function sanitize(tz) {
+    return tz.toLowerCase().replace(/[^a-z0-9]/g, '-');
+  }
+
+  function createClock(prefix, label, tz) {
+    if (document.getElementById(prefix)) return;
+    const container = document.getElementById('clock-widget');
+    const div = document.createElement('div');
+    div.className = 'clock';
+    div.dataset.prefix = prefix;
+    div.dataset.timezone = tz;
+    div.innerHTML = `
+      <h2>${label}</h2>
+      <div class="analog" id="${prefix}-analog">
+        <div class="hand hour" id="${prefix}-hour"></div>
+        <div class="hand minute" id="${prefix}-minute"></div>
+        <div class="hand second" id="${prefix}-second"></div>
+      </div>
+      <p id="${prefix}"></p>`;
+    container.appendChild(div);
+    updateTime();
+  }
+
+  function populateCountries() {
+    if (!countrySelect) return;
+    countrySelect.innerHTML = '<option value="">Country</option>';
+    Object.keys(TIME_ZONES).forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c;
+      opt.textContent = c;
+      countrySelect.appendChild(opt);
+    });
+  }
+
+  function populateCities(country) {
+    if (!citySelect) return;
+    citySelect.innerHTML = '<option value="">City</option>';
+    citySelect.disabled = !country;
+    if (!country) return;
+    Object.keys(TIME_ZONES[country]).forEach(city => {
+      const opt = document.createElement('option');
+      opt.value = city;
+      opt.textContent = city;
+      citySelect.appendChild(opt);
+    });
+  }
+
+  if (countrySelect && citySelect) {
+    populateCountries();
+    countrySelect.addEventListener('change', () => populateCities(countrySelect.value));
+  }
+
+  if (addClock) {
+    addClock.addEventListener('click', () => {
+      const country = countrySelect.value;
+      const city = citySelect.value;
+      if (!country || !city) return;
+      const tz = TIME_ZONES[country][city];
+      const prefix = sanitize(tz);
+      createClock(prefix, city, tz);
+      addedClocks.push({ prefix, label: city, timeZone: tz });
+      sessionStorage.setItem('addedClocks', JSON.stringify(addedClocks));
+    });
+  }
+
+  const savedDark = sessionStorage.getItem('darkMode');
+  if (darkToggle && savedDark !== null) {
+    darkToggle.checked = savedDark === 'true';
+    document.body.classList.toggle('light-mode', !darkToggle.checked);
+  }
+
+  if (darkToggle) {
+    darkToggle.addEventListener('change', () => {
+      document.body.classList.toggle('light-mode', !darkToggle.checked);
+      sessionStorage.setItem('darkMode', darkToggle.checked);
+    });
+  }
+
+  addedClocks.forEach(c => createClock(c.prefix, c.label, c.timeZone));
 }
