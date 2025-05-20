@@ -53,9 +53,16 @@
       flex-wrap: wrap;
     }
 
-    #config label {
-      margin: 0 10px;
-    }
+  #config label {
+    margin: 0 10px;
+  }
+
+  #config input[type="text"] {
+    margin: 0 10px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #555;
+  }
 
     input.toggle {
       appearance: none;
@@ -90,10 +97,7 @@
     }
     
     #clock-widget {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
+      position: relative;
       margin-top: 50px;
       min-height: calc(100vh - 200px);
     }
@@ -115,11 +119,20 @@
 
     .clock.local {
       width: 90vmin;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 
     .clock.local .analog {
       width: 60vmin;
       height: 60vmin;
+    }
+
+    #clock-widget .clock:not(.local) {
+      position: absolute;
+      transform: translate(-50%, -50%);
     }
 
     .analog {
@@ -139,21 +152,21 @@
       background: #fff;
     }
 
-    .hand.hour {
-      width: 4px;
-      height: 40px;
-    }
+  .hand.hour {
+    width: 4px;
+    height: 25%;
+  }
 
-    .hand.minute {
-      width: 3px;
-      height: 55px;
-    }
+  .hand.minute {
+    width: 3px;
+    height: 35%;
+  }
 
-    .hand.second {
-      width: 2px;
-      height: 65px;
-      background: #ff5252;
-    }
+  .hand.second {
+    width: 2px;
+    height: 45%;
+    background: #ff5252;
+  }
     
     .clock h2 {
       color: #fff;
@@ -190,6 +203,8 @@
     </label>
     <select id="country-select"></select>
     <select id="city-select" disabled></select>
+    <input type="text" id="zone-search" list="zone-list" placeholder="Search time zone">
+    <datalist id="zone-list"></datalist>
     <button id="add-clock">Add Clock</button>
   </div>
   <div id="clock-widget">
