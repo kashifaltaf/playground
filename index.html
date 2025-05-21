@@ -49,8 +49,18 @@
       text-align: center;
       margin-top: 20px;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    #config .toggles,
+    #config .add-clock {
+      display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      width: 100%;
+      margin: 5px 0;
     }
 
   #config label {
@@ -115,6 +125,18 @@
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
       margin: 20px;
       padding: 10px;
+      position: relative;
+    }
+
+    .remove-clock {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: #888;
+      font-size: 16px;
+      cursor: pointer;
     }
 
     .clock.local {
@@ -193,19 +215,23 @@
 <body>
   <h1>World Clock</h1>
   <div id="config">
-    <label>
-      Dark mode
-      <input type="checkbox" id="dark-mode-toggle" class="toggle" checked>
-    </label>
-    <label>
-      Analog clock
-      <input type="checkbox" id="analog-toggle" class="toggle" checked>
-    </label>
-    <select id="country-select"></select>
-    <select id="city-select" disabled></select>
-    <input type="text" id="zone-search" list="zone-list" placeholder="Search time zone">
-    <datalist id="zone-list"></datalist>
-    <button id="add-clock">Add Clock</button>
+    <div class="toggles">
+      <label>
+        Dark mode
+        <input type="checkbox" id="dark-mode-toggle" class="toggle" checked>
+      </label>
+      <label>
+        Analog clock
+        <input type="checkbox" id="analog-toggle" class="toggle" checked>
+      </label>
+    </div>
+    <div class="add-clock">
+      <select id="country-select"></select>
+      <select id="city-select" disabled></select>
+      <input type="text" id="zone-search" list="zone-list" placeholder="Search time zone">
+      <datalist id="zone-list"></datalist>
+      <button id="add-clock">Add Clock</button>
+    </div>
   </div>
   <div id="clock-widget">
     <div class="clock local" data-prefix="local" data-timezone="local">

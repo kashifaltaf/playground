@@ -152,6 +152,7 @@ if (typeof window !== 'undefined') {
     div.dataset.prefix = prefix;
     div.dataset.timezone = tz;
     div.innerHTML = `
+      <button class="remove-clock" title="Remove">&#x2715;</button>
       <h2>${label}</h2>
       <div class="analog" id="${prefix}-analog">
         <div class="hand hour" id="${prefix}-hour"></div>
@@ -160,6 +161,18 @@ if (typeof window !== 'undefined') {
       </div>
       <p id="${prefix}"></p>`;
     container.appendChild(div);
+    const removeBtn = div.querySelector('.remove-clock');
+    if (removeBtn) {
+      removeBtn.addEventListener('click', () => {
+        const idx = addedClocks.findIndex(c => c.prefix === prefix);
+        if (idx !== -1) {
+          addedClocks.splice(idx, 1);
+          sessionStorage.setItem('addedClocks', JSON.stringify(addedClocks));
+        }
+        div.remove();
+        arrangeClocks();
+      });
+    }
     updateTime();
     arrangeClocks();
   }
@@ -171,7 +184,10 @@ if (typeof window !== 'undefined') {
     const others = container.querySelectorAll('.clock:not(.local)');
     const total = others.length;
     if (total === 0) return;
-    const radius = local.offsetWidth * 0.75;
+    const otherWidth = others[0].offsetWidth;
+    const radius = local.offsetWidth / 2 + otherWidth / 2 + 20;
+    const needed = (radius + otherWidth / 2) * 2;
+    container.style.minHeight = `${needed}px`;
     others.forEach((clock, i) => {
       const angle = (i / total) * 2 * Math.PI;
       const x = Math.cos(angle) * radius;
